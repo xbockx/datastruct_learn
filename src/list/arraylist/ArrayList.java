@@ -1,4 +1,4 @@
-package arraylist;
+package list.arraylist;
 
 /**
  * 自定义数组类
@@ -11,9 +11,9 @@ public class ArrayList<E> {
     // 存放数据元素
     private E[] elements;
     // 默认数组容量
-    public static final int DEFAULT_CAPACITY = 10;
+    private static final int DEFAULT_CAPACITY = 10;
     // 元素未找到
-    public static final int ELEMENT_NOT_FOUND = -1;
+    private static final int ELEMENT_NOT_FOUND = -1;
 
     public ArrayList() {
         this(DEFAULT_CAPACITY);

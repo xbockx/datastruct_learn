@@ -1,4 +1,6 @@
-package arraylist;
+package list;
+
+import list.arraylist.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
