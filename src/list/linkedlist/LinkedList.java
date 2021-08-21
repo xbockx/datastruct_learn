@@ -2,7 +2,10 @@ package list.linkedlist;
 
 import list.AbstractList;
 
-
+/**
+ * 单向链表
+ * @param <E>
+ */
 public class LinkedList<E> extends AbstractList<E> {
 
     private Node<E> first;
