@@ -1,4 +1,4 @@
-package tree.bst;
+package tree;
 
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -10,9 +10,17 @@ import java.util.Queue;
  */
 public class BinarySearchTree<E> {
 
-    private int size;
-    private Node<E> root;
-    private Comparator<E> comparator;
+    protected int size;
+    protected Node<E> root;
+    protected Comparator<E> comparator;
+
+    public BinarySearchTree() {
+        this(null);
+    }
+
+    public BinarySearchTree(Comparator comparator) {
+        this.comparator = comparator;
+    }
 
     public int size() {
         return size;
@@ -26,8 +34,10 @@ public class BinarySearchTree<E> {
         notNullCheck(element);
 
         if (root == null) {
-            root = new Node<>(element, null);
+            root = createNode(element, null);
             size++;
+            // 添加节点后处理
+            afterAdd(root);
             return;
         }
 
@@ -46,13 +56,14 @@ public class BinarySearchTree<E> {
             }
         }
 
-        Node<E> newNode = new Node<>(element, parent);
+        Node<E> newNode = createNode(element, parent);
         if (cmp > 0) {
             parent.right = newNode;
         } else {
             parent.left = newNode;
         }
         size++;
+        afterAdd(newNode);
 
     }
 
@@ -96,14 +107,20 @@ public class BinarySearchTree<E> {
             } else {
                 node.parent.right = replacement;
             }
+
+            afterRemove(node);
         } else if (node.parent == null) {       // 叶子节点且是根节点
             root = null;
+
+            afterRemove(node);
         } else {        // 叶子节点非根节点
             if (node == node.parent.left) {
                 node.parent.left = null;
             } else {
                 node.parent.right = null;
             }
+
+            afterRemove(node);
         }
 
     }
@@ -134,6 +151,22 @@ public class BinarySearchTree<E> {
     public void clear() {
         root = null;
         size = 0;
+    }
+
+    /**
+     * 添加节点后处理
+     * @param node  新添加节点
+     */
+    protected void afterAdd(Node<E> node) {};
+
+    /**
+     * 删除节点后处理
+     * @param node  被删除节点
+     */
+    protected void afterRemove(Node<E> node) {};
+
+    protected Node<E> createNode(E element, Node<E> parent) {
+        return new Node<E>(element, parent);
     }
 
     /**
@@ -301,7 +334,7 @@ public class BinarySearchTree<E> {
      * @param node
      * @return
      */
-    private Node<E> predecessor(Node<E> node) {
+    protected Node<E> predecessor(Node<E> node) {
         if (node == null) {
             return null;
         }
@@ -328,7 +361,7 @@ public class BinarySearchTree<E> {
      * @param node
      * @return
      */
-    private Node<E> successor(Node<E> node) {
+    protected Node<E> successor(Node<E> node) {
         if (node == null) {
             return null;
         }
@@ -368,11 +401,11 @@ public class BinarySearchTree<E> {
         }
     }
 
-    private static class Node<E> {
-        E element;
-        Node<E> left;
-        Node<E> right;
-        Node<E> parent;
+    protected static class Node<E> {
+        public E element;
+        public Node<E> left;
+        public Node<E> right;
+        public Node<E> parent;
 
         public Node(E element, Node<E> parent) {
             this.element = element;
@@ -393,6 +426,22 @@ public class BinarySearchTree<E> {
          */
         public boolean hasTwoChild() {
             return left != null && right != null;
+        }
+
+        /**
+         * 判断是否为左孩子
+         * @return
+         */
+        public boolean isLeftChild() {
+            return parent != null && this == parent.left;
+        }
+
+        /**
+         * 判断是右孩子
+         * @return
+         */
+        public boolean isRightChild() {
+            return parent != null && this == parent.right;
         }
     }
 
