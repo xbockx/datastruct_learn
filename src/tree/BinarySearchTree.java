@@ -108,11 +108,11 @@ public class BinarySearchTree<E> {
                 node.parent.right = replacement;
             }
 
-            afterRemove(node);
+            afterRemove(node, replacement);
         } else if (node.parent == null) {       // 叶子节点且是根节点
             root = null;
 
-            afterRemove(node);
+            afterRemove(node, null);
         } else {        // 叶子节点非根节点
             if (node == node.parent.left) {
                 node.parent.left = null;
@@ -120,7 +120,7 @@ public class BinarySearchTree<E> {
                 node.parent.right = null;
             }
 
-            afterRemove(node);
+            afterRemove(node, null);
         }
 
     }
@@ -162,8 +162,9 @@ public class BinarySearchTree<E> {
     /**
      * 删除节点后处理
      * @param node  被删除节点
+     * @param replacement  要替代节点
      */
-    protected void afterRemove(Node<E> node) {};
+    protected void afterRemove(Node<E> node, Node<E> replacement) {};
 
     protected Node<E> createNode(E element, Node<E> parent) {
         return new Node<E>(element, parent);
@@ -179,7 +180,7 @@ public class BinarySearchTree<E> {
 
     private void preorderTraversal(Node<E> node, Visitor<E> visitor) {
         if (node == null || visitor.stop) return;
-        visitor.stop = visitor.visit(node.element);
+        visitor.stop = visitor.visit(node);
         preorderTraversal(node.left, visitor);
         preorderTraversal(node.right, visitor);
     }
@@ -197,7 +198,7 @@ public class BinarySearchTree<E> {
 
         inorderTraversal(node.left, visitor);
         if (visitor.stop) return;
-        visitor.stop = visitor.visit(node.element);
+        visitor.stop = visitor.visit(node);
         inorderTraversal(node.right, visitor);
     }
 
@@ -215,7 +216,7 @@ public class BinarySearchTree<E> {
         postorderTraversal(node.left, visitor);
         postorderTraversal(node.right, visitor);
         if (visitor.stop) return;
-        visitor.stop = visitor.visit(node.element);
+        visitor.stop = visitor.visit(node);
     }
 
     /**
@@ -228,7 +229,7 @@ public class BinarySearchTree<E> {
         queue.offer(root);
         while(!queue.isEmpty()) {
             Node<E> node = queue.poll();
-            if (visitor.visit(node.element)) return;
+            if (visitor.visit(node)) return;
             if (node.left != null) {
                 queue.offer(node.left);
             }
@@ -385,7 +386,7 @@ public class BinarySearchTree<E> {
 
     public static abstract class Visitor<E> {
         boolean stop;
-        abstract boolean visit(E element);
+        abstract boolean visit(Node<E> node);
     }
 
     private int compare(E e1, E e2) {
@@ -442,6 +443,20 @@ public class BinarySearchTree<E> {
          */
         public boolean isRightChild() {
             return parent != null && this == parent.right;
+        }
+
+        /**
+         * 查找兄弟节点
+         * @return
+         */
+        public Node<E> sibling() {
+            if (isLeftChild()) {
+                return parent.right;
+            }
+            if (isRightChild()) {
+                return parent.left;
+            }
+            return null;
         }
     }
 
