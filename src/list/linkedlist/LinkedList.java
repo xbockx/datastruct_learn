@@ -21,7 +21,8 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public E get(int index) {
-        return null;
+        rangeCheck(index);
+        return node(index).element;
     }
 
     @Override

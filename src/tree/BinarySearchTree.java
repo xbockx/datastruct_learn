@@ -3,6 +3,7 @@ package tree;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.function.Consumer;
 
 /**
  * 二叉搜索树
@@ -200,6 +201,20 @@ public class BinarySearchTree<E> {
         if (visitor.stop) return;
         visitor.stop = visitor.visit(node);
         inorderTraversal(node.right, visitor);
+    }
+
+    public void inorderTraversal(Consumer<E> consumer) {
+        if (consumer == null) return;
+        inorderTraversal(root, consumer);
+    }
+
+    private void inorderTraversal(Node<E> node, Consumer<E> consumer) {
+        if (node == null) {
+            return;
+        }
+        inorderTraversal(node.left, consumer);
+        consumer.accept(node.element);
+        inorderTraversal(node.right, consumer);
     }
 
     /**
