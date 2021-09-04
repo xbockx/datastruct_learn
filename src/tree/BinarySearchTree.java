@@ -89,6 +89,8 @@ public class BinarySearchTree<E> {
             return;
         }
 
+        size--;
+
         // 处理度为2的节点
         if (node.hasTwoChild()) {
             Node<E> sNode = successor(node);
