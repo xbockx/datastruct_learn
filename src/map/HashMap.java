@@ -31,7 +31,7 @@ public class HashMap<K, V> implements Map<K, V> {
         if (size == 0) {
             return;
         }
-        for(int i = 0; i < table.length; i++) {
+        for (int i = 0; i < table.length; i++) {
             table[i] = null;
         }
         size = 0;
@@ -52,13 +52,37 @@ public class HashMap<K, V> implements Map<K, V> {
         Node<K, V> parent = root;
         Node<K, V> node = root;
         int cmp = 0;
+        K k1 = key;
+        Node<K, V> result = null;
         int h1 = key == null ? 0 : key.hashCode();
         do {
-            cmp = compare(key, node.key, h1, node.hash);
             parent = node;
+            K k2 = node.key;
+            int h2 = node.hash;
+
+            if (h1 > h2) {
+                cmp = 1;
+            } else if (h1 < h2) {
+                cmp = -1;
+            } else if (Objects.equals(k1, k2)) {
+                cmp = 0;
+            } else if (k1 != null && k2 != null
+                    && k1.getClass() == k2.getClass()
+                    && k1 instanceof Comparable) {
+                cmp = ((Comparable) k1).compareTo(k2);
+            } else {
+                if ((node.right != null && (result = node(node.right, k1)) != null)
+                        || (node.left != null && (result = node(node.left, k1)) != null)) {
+                    node = result;
+                    cmp = 0;
+                } else {
+                    cmp = System.identityHashCode(k1) - System.identityHashCode(k2);
+                }
+            }
+
             if (cmp > 0) {
                 node = node.right;
-            } else if(cmp < 0) {
+            } else if (cmp < 0) {
                 node = node.left;
             } else {
                 node.key = key;
@@ -66,7 +90,7 @@ public class HashMap<K, V> implements Map<K, V> {
                 node.value = value;
                 return oldValue;
             }
-        } while(node != null);
+        } while (node != null);
 
         Node<K, V> newNode = new Node<>(key, value, parent);
         if (cmp > 0) {
@@ -102,13 +126,13 @@ public class HashMap<K, V> implements Map<K, V> {
             return false;
         }
         Queue<Node<K, V>> queue = new LinkedList<>();
-        for(int i = 0; i < table.length; i++) {
+        for (int i = 0; i < table.length; i++) {
             if (table[i] == null) {
                 continue;
             }
 
             queue.offer(table[i]);
-            while(!queue.isEmpty()) {
+            while (!queue.isEmpty()) {
                 Node<K, V> node = queue.poll();
                 if (Objects.equals(value, node.value)) {
                     return true;
@@ -130,13 +154,13 @@ public class HashMap<K, V> implements Map<K, V> {
             return;
         }
         Queue<Node<K, V>> queue = new LinkedList<>();
-        for(int i = 0; i < table.length; i++) {
+        for (int i = 0; i < table.length; i++) {
             if (table[i] == null) {
                 continue;
             }
 
             queue.offer(table[i]);
-            while(!queue.isEmpty()) {
+            while (!queue.isEmpty()) {
                 Node<K, V> node = queue.poll();
                 if (visitor.visit(node.key, node.value)) {
                     return;
@@ -152,17 +176,39 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     private Node<K, V> node(K key) {
-        Node<K, V> node = table[index(key)];
-        int h1 = key == null ? 0 : key.hashCode();
-        while(node != null) {
-            int cmp = compare(key, node.key, h1, node.hash);
-            if (cmp == 0) {
-                return node;
-            }
-            if (cmp > 0) {
+        Node<K, V> root = table[index(key)];
+        return root == null ? null : node(root, key);
+    }
+
+    private Node<K, V> node(Node<K, V> node, K k1) {
+        int h1 = k1 == null ? 0 : k1.hashCode();
+        Node<K, V> result = null;
+        while (node != null) {
+            K k2 = node.key;
+            int h2 = node.hash;
+            if (h1 > h2) {
                 node = node.right;
-            } else if(cmp < 0) {
+            } else if (h1 < h2) {
                 node = node.left;
+            } else if (Objects.equals(k1, k2)) {
+                return node;
+            } else if (k1 != null && k2 != null
+                    && k1.getClass() == k2.getClass()
+                    && k1 instanceof Comparable) {
+                int cmp = ((Comparable) k1).compareTo(k2);
+                if (cmp > 0) {
+                    node = node.right;
+                } else if (cmp < 0) {
+                    node = node.left;
+                } else {
+                    return node;
+                }
+            } else if (node.right != null && (result = node(node.right, k1)) != null) {
+                return result;
+            } else if (node.left != null && (result = node(node.left, k1)) != null) {
+                return result;
+            } else {
+                return null;
             }
         }
         return null;
@@ -170,6 +216,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
     /**
      * 计算key的索引
+     *
      * @param key
      * @return
      */
@@ -187,6 +234,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
     /**
      * 查找后继节点
+     *
      * @param node
      * @return
      */
@@ -198,14 +246,14 @@ public class HashMap<K, V> implements Map<K, V> {
         // 有右子树
         if (node.right != null) {
             node = node.right;
-            while(node.left != null) {
+            while (node.left != null) {
                 node = node.left;
             }
             return node;
         }
 
         // 没有右子树
-        while(node.parent != null && node == node.parent.right) {
+        while (node.parent != null && node == node.parent.right) {
             node = node.parent;
         }
 
@@ -415,7 +463,7 @@ public class HashMap<K, V> implements Map<K, V> {
             }
 
             if (k1 instanceof Comparable) {
-                return ((Comparable<K>)k1).compareTo(k2);
+                return ((Comparable<K>) k1).compareTo(k2);
             }
         }
 
@@ -456,6 +504,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
     /**
      * 左旋
+     *
      * @param g grand 祖父节点
      * @param g parent 父节点
      */
@@ -471,6 +520,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
     /**
      * 右旋
+     *
      * @param g grand 祖父节点
      * @param g parent 父节点
      */
@@ -522,6 +572,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
         /**
          * 判断是否是叶子节点
+         *
          * @return
          */
         public boolean isLeaf() {
@@ -530,6 +581,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
         /**
          * 判断是否是度为2的节点
+         *
          * @return
          */
         public boolean hasTwoChild() {
@@ -538,6 +590,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
         /**
          * 判断是否为左孩子
+         *
          * @return
          */
         public boolean isLeftChild() {
@@ -546,6 +599,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
         /**
          * 判断是右孩子
+         *
          * @return
          */
         public boolean isRightChild() {
@@ -554,6 +608,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
         /**
          * 查找兄弟节点
+         *
          * @return
          */
         public Node<K, V> sibling() {
