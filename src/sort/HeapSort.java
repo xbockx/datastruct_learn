@@ -13,6 +13,7 @@ public class HeapSort extends Sort{
     protected void sort() {
         // 原地建堆
         // 自下而上的下滤
+        heapSize = array.length;
         for (int i = (heapSize >> 1) - 1; i >= 0; i--) {
             siftDown(i);
         }

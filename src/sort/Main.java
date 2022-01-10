@@ -1,5 +1,6 @@
 package sort;
 
+import util.Asserts;
 import util.Integers;
 import util.TimeUtil;
 
@@ -35,8 +36,22 @@ public class Main {
 
 //        Integer[] array = Integers.random(10, 1, 100);
 //        Integers.print(array);
+//        Integers.print(array);
 //        selectionSort(array);
 //        Integers.print(array);
+//        new HeapSort().sort(array);
+//        new InsertionSort().sort(array);
+//        Integers.print(array);
+
+        Integer[] array = new Integer[] {4, 5, 3, 6, 2, 5, 1};
+        new InsertionSort().sort(array);
+        Integers.print(array);
+//        System.out.println(BinarySearch.indexOf(array, 5));
+//        System.out.println(BinarySearch.indexOf(array, 3));
+//        System.out.println(BinarySearch.indexOf(array, 1));
+//        Asserts.test(BinarySearch.indexOf(array, 5) == 5);
+//        Asserts.test(BinarySearch.indexOf(array, 3) == 2);
+//        Asserts.test(BinarySearch.indexOf(array, 1) == 0);
     }
 
 
