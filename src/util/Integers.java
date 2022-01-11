@@ -38,11 +38,33 @@ public class Integers {
         return ret;
     }
 
+    /**
+     * [begin, end)
+     * @param array
+     * @param begin
+     * @param end
+     * @return
+     */
+    public static Integer[] copy(Integer[] array, int begin, int end) {
+        Integer[] ret = new Integer[end - begin];
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = array[begin + i];
+        }
+        return ret;
+    }
+
     public static Integer[] ascOrder(int count) {
         Integer[] array = new Integer[count];
         for (int i = 0; i < count; i++) {
             array[i] = i+1;
         }
         return array;
+    }
+
+    public static void main(String[] args) {
+        Integer[] array = random(10, 0, 100);
+        print(array);
+        final Integer[] copy = copy(array, 5, 10);
+        print(copy);
     }
 }
