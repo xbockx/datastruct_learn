@@ -44,7 +44,7 @@ public class Main {
 //        Integers.print(array);
 
         Integer[] array = new Integer[] {4, 5, 3, 6, 2, 5, 1};
-        new MergeSort().sort(array);
+        new ShellSort().sort(array);
         Integers.print(array);
 //        System.out.println(BinarySearch.indexOf(array, 5));
 //        System.out.println(BinarySearch.indexOf(array, 3));
