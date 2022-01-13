@@ -1,11 +1,13 @@
-package sort;
+package sort.cmp;
+
+import sort.Sort;
 
 /**
  * @Description
  * @Author xbockx
  * @Date 1/10/2022
  */
-public class InsertionSort extends Sort{
+public class InsertionSort extends Sort {
 
     // binary search + move
     @Override

@@ -1,5 +1,6 @@
-package sort;
+package sort.cmp;
 
+import sort.Sort;
 import util.Integers;
 
 /**
@@ -7,7 +8,7 @@ import util.Integers;
  * @Author xbockx
  * @Date 1/11/2022
  */
-public class MergeSort extends Sort{
+public class MergeSort extends Sort {
     @Override
     protected void sort() {
         sort(0, array.length );

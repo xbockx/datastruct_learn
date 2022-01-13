@@ -1,11 +1,13 @@
-package sort;
+package sort.cmp;
+
+import sort.Sort;
 
 /**
  * @Description
  * @Author xbockx
  * @Date 1/9/2022
  */
-public class HeapSort extends Sort{
+public class HeapSort extends Sort {
 
     private int heapSize;
 

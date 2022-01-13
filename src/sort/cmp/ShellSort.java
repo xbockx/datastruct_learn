@@ -1,4 +1,6 @@
-package sort;
+package sort.cmp;
+
+import sort.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.List;
  * @Author xbockx
  * @Date 1/13/2022
  */
-public class ShellSort extends Sort{
+public class ShellSort extends Sort {
     @Override
     protected void sort() {
         final List<Integer> stepSequence = shellStepSequence();

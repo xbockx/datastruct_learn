@@ -1,11 +1,13 @@
-package sort;
+package sort.cmp;
+
+import sort.Sort;
 
 /**
  * @Description
  * @Author xbockx
  * @Date 1/9/2022
  */
-public class BubbleSort extends Sort{
+public class BubbleSort extends Sort {
     @Override
     protected void sort() {
         for(int end = array.length; end > 0; end--) {

@@ -1,11 +1,13 @@
-package sort;
+package sort.cmp;
+
+import sort.Sort;
 
 /**
  * @Description
  * @Author xbockx
  * @Date 1/12/2022
  */
-public class QuickSort extends Sort{
+public class QuickSort extends Sort {
     @Override
     protected void sort() {
         sort(0, array.length);

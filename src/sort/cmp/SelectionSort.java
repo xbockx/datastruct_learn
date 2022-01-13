@@ -1,11 +1,13 @@
-package sort;
+package sort.cmp;
+
+import sort.Sort;
 
 /**
  * @Description
  * @Author xbockx
  * @Date 1/9/2022
  */
-public class SelectionSort extends Sort{
+public class SelectionSort extends Sort {
     @Override
     protected void sort() {
         for(int end = array.length - 1; end > 0; end--) {
