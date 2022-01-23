@@ -23,4 +23,8 @@ public interface Graph<V, E> {
 
     void print();
 
+    void bfs(V begin);
+
+    void dfs(V begin);
+
 }

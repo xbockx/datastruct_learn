@@ -1,5 +1,7 @@
 package graph;
 
+import sun.awt.image.ImageWatched;
+
 import java.util.*;
 
 /**
@@ -98,6 +100,49 @@ public class ListGraph<V, E> implements Graph<V, E> {
     public void print() {
         for (Edge<V, E> edge : edges) {
             System.out.println(edge);
+        }
+    }
+
+    @Override
+    public void bfs(V begin) {
+        Vertex<V, E> beginVertex = vertices.get(begin);
+        if (beginVertex == null) {
+            return;
+        }
+        Set<Vertex<V, E>> visited = new HashSet<>();
+        Queue<Vertex<V, E>> queue = new LinkedList<>();
+        queue.offer(beginVertex);
+        visited.add(beginVertex);
+        while(!queue.isEmpty()) {
+            final Vertex<V, E> vertex = queue.poll();
+            System.out.println(vertex);
+            for (Edge<V, E> edge : vertex.outEdges) {
+                if (!visited.contains(edge.to)) {
+                    queue.offer(edge.to);
+                    visited.add(edge.to);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void dfs(V begin) {
+        final Vertex<V, E> beginVertex = vertices.get(begin);
+        if (beginVertex == null) {
+            return;
+        }
+        dfs(beginVertex, new HashSet<>());
+    }
+
+    private void dfs(Vertex<V, E> vertex, Set<Vertex<V, E>> visited) {
+        System.out.println(vertex);
+        visited.add(vertex);
+
+        for (Edge<V, E> edge : vertex.outEdges) {
+            if (visited.contains(edge.to)) {
+                continue;
+            }
+            dfs(edge.to, visited);
         }
     }
 
