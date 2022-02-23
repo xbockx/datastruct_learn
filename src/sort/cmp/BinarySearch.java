@@ -1,5 +1,7 @@
 package sort.cmp;
 
+import sort.Sort;
+
 /**
  * @Description
  * @Author xbockx

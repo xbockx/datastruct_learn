@@ -11,6 +11,9 @@ import java.util.*;
  */
 public class ListGraph<V, E> implements Graph<V, E> {
 
+    public static final String RECURSION = "RECURSION";
+    public static final String NON_RECURSION = "NON_RECURSION";
+
     private Map<V, Vertex<V, E>> vertices = new HashMap<>();
 
     private Set<Edge<V, E>> edges = new HashSet<>();
@@ -127,14 +130,52 @@ public class ListGraph<V, E> implements Graph<V, E> {
 
     @Override
     public void dfs(V begin) {
+        dfs(begin, RECURSION);
+    }
+
+    public void dfs(V begin, String method) {
+        if (method.equals(RECURSION)) {
+            final Vertex<V, E> beginVertex = vertices.get(begin);
+            if (beginVertex == null) {
+                return;
+            }
+            dfsRecursion(beginVertex, new HashSet<>());
+        } else {
+            dfsNonRecursion(begin);
+        }
+    }
+
+    public void dfsNonRecursion(V begin) {
         final Vertex<V, E> beginVertex = vertices.get(begin);
         if (beginVertex == null) {
             return;
         }
-        dfs(beginVertex, new HashSet<>());
+
+        Set<Vertex<V, E>> visited = new HashSet<>();
+        Stack<Vertex<V, E>> stack = new Stack<>();
+
+        // init
+        stack.push(beginVertex);
+        visited.add(beginVertex);
+        // visit
+        System.out.println(beginVertex);
+
+        while(!stack.isEmpty()) {
+            final Vertex<V, E> vertex = stack.pop();
+            for (Edge<V, E> edge : vertex.outEdges) {
+                if (visited.contains(edge.to)) {
+                    continue;
+                }
+                stack.push(edge.from);
+                stack.push(edge.to);
+                visited.add(edge.to);
+                System.out.println(edge.to);
+                break;
+            }
+        }
     }
 
-    private void dfs(Vertex<V, E> vertex, Set<Vertex<V, E>> visited) {
+    private void dfsRecursion(Vertex<V, E> vertex, Set<Vertex<V, E>> visited) {
         System.out.println(vertex);
         visited.add(vertex);
 
@@ -142,7 +183,7 @@ public class ListGraph<V, E> implements Graph<V, E> {
             if (visited.contains(edge.to)) {
                 continue;
             }
-            dfs(edge.to, visited);
+            dfsRecursion(edge.to, visited);
         }
     }
 

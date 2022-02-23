@@ -14,12 +14,16 @@ public class QuickSort extends Sort {
     }
 
     private void sort(int begin, int end) {
+        // 长度小于 2 不再排序
         if (end - begin < 2) {
             return;
         }
 
+        // 确定轴点位置
         int mid = pivot(begin, end);
+        // 排序轴点左侧位置
         sort(begin, mid);
+        // 排序轴点右侧位置
         sort(mid + 1, end);
     }
 
@@ -27,10 +31,13 @@ public class QuickSort extends Sort {
         // 随机选一个轴点
         swap(begin, begin + (int)(Math.random() * (end - begin)));
 
+        // 备份元素
         Integer pivot = array[begin];
+        // end 指向最后一个元素
         end--;
 
         while(begin < end) {
+            // 从右往左扫描
             while(begin < end) {
                 if (cmpValue(pivot, array[end]) < 0) {
                     end--;
@@ -39,6 +46,7 @@ public class QuickSort extends Sort {
                     break;
                 }
             }
+            // 从左往右扫描
             while (begin < end) {
                 if (cmpValue(pivot, array[begin]) > 0) {
                     begin++;
@@ -50,6 +58,7 @@ public class QuickSort extends Sort {
 
         }
 
+        // 将轴点放入最终位置
         array[begin] = pivot;
 
         return begin;
