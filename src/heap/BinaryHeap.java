@@ -97,7 +97,9 @@ public class BinaryHeap<E> extends AbstractHeap<E> {
 //        for (int i = 0; i < size; i++) {
 //            siftUp(i);
 //        }
+
         // 自下而上的下滤
+        // 从最后一个非叶子节点开始
         for (int i = (size >> 1) - 1; i >= 0; i--) {
             siftDown(i);
         }

@@ -65,7 +65,6 @@ public class BinarySearchTree<E> {
         }
         size++;
         afterAdd(newNode);
-
     }
 
     public boolean contains(E element) {
